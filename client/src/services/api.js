@@ -1,23 +1,26 @@
 const BASE_URL =
   import.meta.env.PROD
-    ? "/api/contacts"
+    ? "https://contact-management-api.vercel.app/api/contacts"
     : "http://localhost:5000/api/contacts";
 
 export const getContacts = async () => {
   const res = await fetch(BASE_URL);
+  if (!res.ok) throw new Error("Failed to fetch contacts");
   return res.json();
 };
 
 export const addContact = async (data) => {
-  await fetch(BASE_URL, {
+  const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+  if (!res.ok) throw new Error("Failed to add contact");
 };
 
 export const deleteContact = async (id) => {
-  await fetch(`${BASE_URL}/${id}`, {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
+  if (!res.ok) throw new Error("Failed to delete contact");
 };

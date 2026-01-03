@@ -1,5 +1,6 @@
 import express from "express";
 import Contact from "../models/Contact.js";
+import connectDB from "../config/db.js";
 
 const router = express.Router();
 
