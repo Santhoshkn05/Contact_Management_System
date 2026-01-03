@@ -1,20 +1,28 @@
-const BASE_URL = "https://contact-management-api.vercel.app/api/contacts";
+const BASE_URL =
+  "https://contact-management-system-backend-oy1h.onrender.com/api/contacts";
 
 export const getContacts = async () => {
   const res = await fetch(BASE_URL);
+  if (!res.ok) throw new Error("Failed to fetch contacts");
   return res.json();
 };
 
 export const addContact = async (data) => {
-  await fetch(BASE_URL, {
+  const res = await fetch(BASE_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
+
+  if (!res.ok) throw new Error("Failed to add contact");
 };
 
 export const deleteContact = async (id) => {
-  await fetch(`${BASE_URL}/${id}`, {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
+
+  if (!res.ok) throw new Error("Failed to delete contact");
 };
