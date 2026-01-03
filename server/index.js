@@ -1,16 +1,17 @@
 import express from "express";
 import cors from "cors";
+import mongoose from "mongoose";
 import contactRoutes from "./routes/contactRoutes.js";
-import connectDB from "./config/db.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/contacts", async (req, res, next) => {
-  await connectDB();
-  next();
-}, contactRoutes);
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err));
+
+app.use("/api/contacts", contactRoutes);
 
 export default app;
