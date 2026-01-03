@@ -1,26 +1,18 @@
-import express from "express";
 import cors from "cors";
-import connectDB from "./config/db.js";
-import contactRoutes from "./routes/contactRoutes.js";
 
-const app = express();
-
-connectDB();
+const allowedOrigins = [
+  "https://contact-management-system-ahdd.onrender.com",
+  "https://contact-management-system-frontend-ozqh.onrender.com"
+];
 
 app.use(cors({
-  origin: "https://contact-management-system-ahdd.onrender.com",
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
   methods: ["GET", "POST", "DELETE"],
+  credentials: true
 }));
-
-app.use(express.json());
-
-app.use("/api/contacts", contactRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
