@@ -1,5 +1,4 @@
-const BASE_URL =
-  "https://contact-management-i8w8.onrender.com/api/contacts";
+const BASE_URL = "https://contact-management-i8w8.onrender.com/api/contacts";
 
 export const getContacts = async () => {
   const res = await fetch(BASE_URL);
@@ -33,4 +32,6 @@ export const deleteContact = async (id) => {
   if (!res.ok) {
     throw new Error("Failed to delete contact");
   }
+
+  return res.json();
 };
