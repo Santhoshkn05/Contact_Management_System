@@ -1,5 +1,4 @@
-const BASE_URL =
-  "https://contact-management-system-backend-oy1h.onrender.com/api/contacts";
+const BASE_URL = "https://contact-management-system-backend-oy1h.onrender.com/api/contacts";
 
 export const getContacts = async () => {
   const res = await fetch(BASE_URL);
