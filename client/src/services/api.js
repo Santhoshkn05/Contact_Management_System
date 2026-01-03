@@ -14,6 +14,7 @@ export const addContact = async (data) => {
   });
 
   if (!res.ok) throw new Error("Failed to add contact");
+  return res.json();
 };
 
 export const deleteContact = async (id) => {
