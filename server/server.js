@@ -6,9 +6,8 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 dotenv.config();
 
-const app = express(); // ✅ app MUST be defined FIRST
+const app = express(); 
 
-// ✅ CORS comes AFTER app is created
 const allowedOrigins = [
   "https://contact-management-system-ahdd.onrender.com",
   "https://contact-management-system-frontend-ozqh.onrender.com"
