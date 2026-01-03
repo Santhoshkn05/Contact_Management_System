@@ -1,15 +1,16 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import contactRoutes from "./routes/contactRoutes.js";
+import connectDB from "./config/db.js";
 
 const app = express();
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// routes
-app.use("/api/contacts", contactRoutes);
+app.use("/api/contacts", async (req, res, next) => {
+  await connectDB();
+  next();
+}, contactRoutes);
 
 export default app;

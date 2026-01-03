@@ -1,63 +1,24 @@
-import express from "express";
-import Contact from "../models/Contact.js";
-import connectDB from "../config/db.js";
+import mongoose from "mongoose";
 
-const router = express.Router();
+let cached = global.mongoose;
 
-// POST - Add Contact
-router.post("/", async (req, res) => {
-  try {
-    await connectDB(); // ✅ IMPORTANT
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
-    const { name, email, phone, message } = req.body;
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
+  }
 
-    if (!name || !email || !phone) {
-      return res.status(400).json({ message: "Required fields missing" });
-    }
-
-    const contact = await Contact.create({
-      name,
-      email,
-      phone,
-      message,
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGO_URI, {
+      bufferCommands: false,
     });
-
-    res.status(201).json(contact);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
   }
-});
 
-// GET - Fetch Contacts
-router.get("/", async (req, res) => {
-  try {
-    await connectDB(); // ✅ IMPORTANT
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
 
-    const contacts = await Contact.find().sort({ createdAt: -1 });
-    res.json(contacts);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// DELETE - Delete Contact
-router.delete("/:id", async (req, res) => {
-  try {
-    await connectDB(); // ✅ IMPORTANT
-
-    const contact = await Contact.findByIdAndDelete(req.params.id);
-
-    if (!contact) {
-      return res.status(404).json({ message: "Contact not found" });
-    }
-
-    res.json({ message: "Contact deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Delete failed" });
-  }
-});
-
-export default router;
+export default connectDB;
