@@ -5,16 +5,14 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
-// ✅ CORS – allow your frontend
+// CORS
 app.use(
   cors({
     origin: "https://contact-management-system-ahdd.onrender.com",
     methods: ["GET", "POST", "DELETE"],
-    credentials: true,
   })
 );
 
-// middleware
 app.use(express.json());
 
 // routes
@@ -25,6 +23,11 @@ app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-connectDB();
+// 🔑 IMPORTANT: listen on PORT
+const PORT = process.env.PORT || 5000;
 
-export default app;
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+});
