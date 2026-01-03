@@ -1,8 +1,11 @@
-const BASE_URL = "https://contact-management-system-backend-oy1h.onrender.com/api/contacts";
+const BASE_URL =
+  "https://contact-management-i8w8.onrender.com/api/contacts";
 
 export const getContacts = async () => {
   const res = await fetch(BASE_URL);
-  if (!res.ok) throw new Error("Failed to fetch contacts");
+  if (!res.ok) {
+    throw new Error("Failed to fetch contacts");
+  }
   return res.json();
 };
 
@@ -15,7 +18,11 @@ export const addContact = async (data) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed to add contact");
+  if (!res.ok) {
+    throw new Error("Failed to add contact");
+  }
+
+  return res.json();
 };
 
 export const deleteContact = async (id) => {
@@ -23,5 +30,7 @@ export const deleteContact = async (id) => {
     method: "DELETE",
   });
 
-  if (!res.ok) throw new Error("Failed to delete contact");
+  if (!res.ok) {
+    throw new Error("Failed to delete contact");
+  }
 };
